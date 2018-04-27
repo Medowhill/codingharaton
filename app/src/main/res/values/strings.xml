@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Codingharaton</string>
+
+    <string name="bluetooth_device_address">addr</string>
+
     <string name="instruction_default">Press below to START</string>
     <string name="instruction_clicked">Press below to STOP</string>
+
+    <string name="bluetoothConnection_textView_text">Connecting to a device</string>
 
     <string name="button_button_left_fast_text">Left-Fast</string>
     <string name="button_button_right_fast_text">Right-Fast</string>
