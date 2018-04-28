@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.haraton.salad.codingharaton.R;
@@ -42,6 +43,7 @@ public class ServerActivity extends AppCompatActivity {
                             new HttpTask(getApplicationContext(), HttpTask.TASK_CMD_GET, new HttpTask.Callback() {
                                 @Override
                                 public void onResult(byte result) {
+                                    Log.i("test-result", String.valueOf(result));
                                     if (0 <= result && result <= 3)
                                         ((MyApplication) getApplication()).send(false, (byte) 0, result);
                                 }
