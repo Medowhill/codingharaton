@@ -16,11 +16,16 @@ public class ChoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice);
 
+        final boolean http = getIntent().getBooleanExtra("http", true);
+        final byte id = getIntent().getByteExtra("id", (byte) 0);
+
         Button buttonButton = (Button) findViewById(R.id.moveByButton) ;
         buttonButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(ChoiceActivity.this,ButtonActivity.class);
+                intent.putExtra("http", http);
+                intent.putExtra("id", id);
                 startActivity(intent);
             }
         }) ;
@@ -30,6 +35,8 @@ public class ChoiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(ChoiceActivity.this,MotionActivity.class);
+                intent.putExtra("http", http);
+                intent.putExtra("id", id);
                 startActivity(intent);
             }
         }) ;
@@ -39,6 +46,8 @@ public class ChoiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(ChoiceActivity.this,VoiceActivity.class);
+                intent.putExtra("http", http);
+                intent.putExtra("id", id);
                 startActivity(intent);
             }
         }) ;

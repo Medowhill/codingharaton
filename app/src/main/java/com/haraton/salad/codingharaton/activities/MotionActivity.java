@@ -22,8 +22,9 @@ public class MotionActivity extends AppCompatActivity implements SensorEventList
 
     private final int ST_UP = 0, ST_DOWN = 1, ST_MID = 2;
     private int mState = ST_UP;
-    private boolean able = false;
+    private boolean able = false, http;
     private ArrayList<Float> accs = new ArrayList<>();
+    private byte id;
 
     private SensorManager mSensorManager;
     private Sensor mRotSensor, mAccelSensor;
@@ -36,6 +37,9 @@ public class MotionActivity extends AppCompatActivity implements SensorEventList
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mRotSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         mAccelSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+
+        http = getIntent().getBooleanExtra("http", true);
+        id = getIntent().getByteExtra("id", (byte) 0);
     }
 
     @Override
@@ -82,14 +86,14 @@ public class MotionActivity extends AppCompatActivity implements SensorEventList
                 posSum /= n;
                 if (Math.abs(negSum) < Math.abs(posSum)) { // left
                     if (posSum > 15)
-                        ((MyApplication) getApplication()).sendThroughBluetooth(Command.LEFT_FAST);
+                        ((MyApplication) getApplication()).send(http, id, Command.LEFT_FAST);
                     else
-                        ((MyApplication) getApplication()).sendThroughBluetooth(Command.LEFT_SLOW);
+                        ((MyApplication) getApplication()).send(http, id, Command.LEFT_SLOW);
                 } else {
                     if (negSum > -15)
-                        ((MyApplication) getApplication()).sendThroughBluetooth(Command.RIGHT_SLOW);
+                        ((MyApplication) getApplication()).send(http, id, Command.RIGHT_SLOW);
                     else
-                        ((MyApplication) getApplication()).sendThroughBluetooth(Command.RIGHT_FAST);
+                        ((MyApplication) getApplication()).send(http, id, Command.RIGHT_FAST);
                 }
             }
         } else if (event.sensor.equals(mAccelSensor)) {

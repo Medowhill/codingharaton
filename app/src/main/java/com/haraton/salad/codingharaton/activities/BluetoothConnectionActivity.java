@@ -228,6 +228,7 @@ public class BluetoothConnectionActivity extends AppCompatActivity {
         if (commander != null) {
             ((MyApplication) getApplication()).setCommander(commander);
             Intent intent = new Intent(getApplicationContext(), ChoiceActivity.class);
+            intent.putExtra("http", false);
             startActivity(intent);
         } else {
             new AlertDialog.Builder(BluetoothConnectionActivity.this)

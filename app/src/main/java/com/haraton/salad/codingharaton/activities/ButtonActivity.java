@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.haraton.salad.codingharaton.R;
 import com.haraton.salad.codingharaton.applications.MyApplication;
+import com.haraton.salad.codingharaton.tasks.HttpTask;
 import com.haraton.salad.codingharaton.utils.BluetoothCommander;
 import com.haraton.salad.codingharaton.utils.Command;
 
@@ -25,28 +26,31 @@ public class ButtonActivity extends AppCompatActivity {
         buttonLeftSlow = (Button) findViewById(R.id.button_button_left_slow);
         buttonRightSlow = (Button) findViewById(R.id.button_button_right_slow);
 
+        final boolean http = getIntent().getBooleanExtra("http", true);
+        final byte id = getIntent().getByteExtra("id", (byte) 0);
+
         buttonLeftFast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MyApplication) getApplication()).sendThroughBluetooth(Command.LEFT_FAST);
+                ((MyApplication) getApplication()).send(http, id, Command.LEFT_FAST);
             }
         });
         buttonRightFast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MyApplication) getApplication()).sendThroughBluetooth(Command.RIGHT_FAST);
+                ((MyApplication) getApplication()).send(http, id, Command.RIGHT_FAST);
             }
         });
         buttonLeftSlow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MyApplication) getApplication()).sendThroughBluetooth(Command.LEFT_SLOW);
+                ((MyApplication) getApplication()).send(http, id, Command.LEFT_SLOW);
             }
         });
         buttonRightSlow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MyApplication) getApplication()).sendThroughBluetooth(Command.RIGHT_SLOW);
+                ((MyApplication) getApplication()).send(http, id, Command.RIGHT_SLOW);
             }
         });
     }
