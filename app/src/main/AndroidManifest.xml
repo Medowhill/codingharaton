@@ -26,21 +26,22 @@
         android:supportsRtl="true"
         android:name=".applications.MyApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.ChoiceActivity">
-        </activity>
-        <activity android:name=".activities.ButtonActivity" />
-        <activity android:name=".activities.MotionActivity" />
-        <activity android:name=".activities.VoiceActivity" />
-        <activity
-            android:name=".activities.BluetoothConnectionActivity"
-            android:theme="@style/AppTheme_noTitle">
+        <activity android:name=".activities.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activities.ServerActivity"/>
+        <activity android:name=".activities.ClientActivity"/>
+        <activity
+            android:name=".activities.BluetoothConnectionActivity"
+            android:theme="@style/AppTheme_noTitle">
+        </activity>
+        <activity android:name=".activities.ChoiceActivity" />
+        <activity android:name=".activities.ButtonActivity" />
+        <activity android:name=".activities.MotionActivity" />
+        <activity android:name=".activities.VoiceActivity" />
     </application>
 
 </manifest>

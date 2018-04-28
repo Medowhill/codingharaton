@@ -8,4 +8,6 @@
     <color name="bluetoothConnection_title_text_color">#ffffff</color>
     <color name="bluetoothConnection_progressBar_color">#ffffff</color>
     <color name="bluetooth_device_textView_name_color">#202020</color>
+
+    <color name="server_text_view_text_color">#202020</color>
 </resources>

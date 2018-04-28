@@ -22,10 +22,19 @@
     <string name="ok">ok</string>
     <string name="cancel">cancel</string>
     <string name="bt_uuid">00001101-0000-1000-8000-00805F9B34FB</string>
-    <string name="url_client">http://ssal.sparcs.org:8888/client</string>
-    <string name="url_server">http://ssal.sparcs.org:8888/server?id=%d</string>
+    <string name="url_client">http://ssal.sparcs.org:8888/client?id=%d</string>
+    <string name="url_server">http://ssal.sparcs.org:8888/server</string>
     <string name="url_command_get">http://ssal.sparcs.org:8888/command?id=%d</string>
     <string name="url_command_post">http://ssal.sparcs.org:8888/command?id=%d\&amp;cmd=%d</string>
+
+    <string name="start_button_single_text">Single Mode</string>
+    <string name="start_button_client_text">Client Mode</string>
+    <string name="start_button_server_text">Server Mode</string>
+
+    <string name="server_dialog_getting">Getting an id from the server &#8230;</string>
+
+    <string name="client_dialog_verifying">Verifying the id from the server &#8230;</string>
+    <string name="client_dialog_wrong">Wrong id!</string>
 
     <string name="instruction_default">Press below to START</string>
     <string name="instruction_clicked">Press below to STOP</string>
@@ -37,7 +46,7 @@
     <string name="bluetoothConnection_dialog_noper_msg">You cannot use this function if coarse location permission is not allowed.</string>
     <string name="bluetoothConnection_dialog_connect_msg">Are you sure to connect to the device(%s)?</string>
     <string name="bluetoothConnection_dialog_fail_msg">Fail to connect to the device.</string>
-    <string name="bluetoothConnection_dialog_connecting">Connecting to the device ...</string>
+    <string name="bluetoothConnection_dialog_connecting">Connecting to the device &#8230;</string>
 
     <string name="button_button_left_fast_text">Left-Fast</string>
     <string name="button_button_right_fast_text">Right-Fast</string>

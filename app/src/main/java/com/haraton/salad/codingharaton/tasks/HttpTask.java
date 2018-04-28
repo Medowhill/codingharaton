@@ -22,7 +22,7 @@ public class HttpTask extends AsyncTask<Byte, Void, Byte> {
     private Callback mCallback;
     private int mTask;
 
-    public abstract class Callback {
+    public abstract static class Callback {
         public abstract void onResult(byte result);
     }
 

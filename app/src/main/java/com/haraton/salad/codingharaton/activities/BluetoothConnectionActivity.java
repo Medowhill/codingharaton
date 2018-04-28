@@ -39,6 +39,8 @@ public class BluetoothConnectionActivity extends AppCompatActivity {
 
     private final int REQ_BLUETOOTH = 0, REQ_PERMISSION = 1;
 
+    private boolean single;
+
     private BluetoothAdapter mBluetoothAdapter;
 
     private BluetoothDeviceAdapter mAdapterPaired, mAdapterDiscovered;
@@ -98,6 +100,8 @@ public class BluetoothConnectionActivity extends AppCompatActivity {
         recyclerViewDiscovered.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mAdapterDiscovered = new BluetoothDeviceAdapter(mListener);
         recyclerViewDiscovered.setAdapter(mAdapterDiscovered);
+
+        single = getIntent().getBooleanExtra("single", true);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
@@ -227,8 +231,12 @@ public class BluetoothConnectionActivity extends AppCompatActivity {
     public void afterConnect(BluetoothCommander commander) {
         if (commander != null) {
             ((MyApplication) getApplication()).setCommander(commander);
-            Intent intent = new Intent(getApplicationContext(), ChoiceActivity.class);
-            intent.putExtra("http", false);
+            Intent intent;
+            if (single) {
+                intent = new Intent(getApplicationContext(), ChoiceActivity.class);
+                intent.putExtra("http", false);
+            } else
+                intent = new Intent(getApplicationContext(), ServerActivity.class);
             startActivity(intent);
         } else {
             new AlertDialog.Builder(BluetoothConnectionActivity.this)

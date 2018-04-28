@@ -8,4 +8,7 @@
     <dimen name="bluetooth_device_textView_name_textSize">15sp</dimen>
     <dimen name="bluetooth_device_textView_address_textSize">12sp</dimen>
 
+    <dimen name="server_text_view_text_size">50sp</dimen>
+    <dimen name="client_edit_text_text_size">50sp</dimen>
+
 </resources>
