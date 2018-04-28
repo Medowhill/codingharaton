@@ -8,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
 
 import com.haraton.salad.codingharaton.R;
@@ -44,7 +43,6 @@ public class ClientActivity extends AppCompatActivity {
                         new HttpTask(getApplicationContext(), HttpTask.TASK_CLIENT, new HttpTask.Callback() {
                             @Override
                             public void onResult(byte result) {
-                                Log.i("test-http", String.valueOf(result));
                                 dialog.dismiss();
                                 editText.setText("");
 
