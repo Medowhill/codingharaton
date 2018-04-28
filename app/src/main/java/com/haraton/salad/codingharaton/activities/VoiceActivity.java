@@ -26,6 +26,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import com.haraton.salad.codingharaton.applications.MyApplication;
+import com.haraton.salad.codingharaton.utils.Command;
 import com.microsoft.bing.speech.Conversation;
 import com.microsoft.bing.speech.SpeechClientStatus;
 import com.microsoft.cognitiveservices.speechrecognition.DataRecognitionClient;
@@ -40,6 +42,9 @@ import java.util.concurrent.TimeUnit;
 
 public class VoiceActivity extends Activity implements ISpeechRecognitionServerEvents
 {
+    boolean http;
+    byte id;
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -65,6 +70,9 @@ public class VoiceActivity extends Activity implements ISpeechRecognitionServerE
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("check", "code running");
+        http = getIntent().getBooleanExtra("http", true);
+        id = getIntent().getByteExtra("id", (byte) 0);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice);
 
@@ -156,27 +164,27 @@ public class VoiceActivity extends Activity implements ISpeechRecognitionServerE
                 String result = response.Results[i].DisplayText;
                 Log.i("-result", result);
                 int btData = getBTdata(result);
-                if (btData == 11){}
-                else if (btData == 12){}
-                else if (btData == 21){}
-                else if (btData == 22){}
+                if (btData == 11){((MyApplication) getApplication()).send(http, id, Command.LEFT_SLOW);}
+                else if (btData == 12){((MyApplication) getApplication()).send(http, id, Command.LEFT_FAST);}
+                else if (btData == 21){((MyApplication) getApplication()).send(http, id, Command.RIGHT_SLOW);}
+                else if (btData == 22){((MyApplication) getApplication()).send(http, id, Command.RIGHT_FAST);}
             }
         }
     };
 
     public int getBTdata(String result){
         int direction = 100;
-        if (result.contains("left")){
-            direction = 1;
+        if (result.toLowerCase().contains("left")){
+            direction = 10;
         }
-        else if (result.contains("right")){
-            direction = 2;
+        else if (result.toLowerCase().contains("right")){
+            direction = 20;
         }
         int speed = 100;
-        if (result.contains("slow")){
+        if (result.toLowerCase().contains("slow")){
             speed = 1;
         }
-        else if (result.contains("fast")){
+        else if (result.toLowerCase().contains("fast")){
             speed = 2;
         }
         return direction+speed;
