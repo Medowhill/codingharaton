@@ -9,8 +9,6 @@ import java.io.OutputStream;
 
 public class BluetoothCommander {
 
-    public static byte DIR_LEFT = 0, DIR_RIGHT = 1, SPEED_SLOW = 0, SPEED_FAST = 1;
-
     private BluetoothSocket mSocket;
     private InputStream mInputStream;
     private OutputStream mOutputStream;
@@ -25,9 +23,9 @@ public class BluetoothCommander {
         }
     }
 
-    public void send(byte direction, byte speed) {
+    public void send(byte command) {
         try {
-            mOutputStream.write(new byte[] { direction, speed });
+            mOutputStream.write(new byte[] { command });
         } catch(IOException e) {
             Log.e("test-bluetooth", "ioe", e);
         }

@@ -27,11 +27,6 @@
         android:name=".applications.MyApplication"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.ChoiceActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activities.ButtonActivity" />
         <activity android:name=".activities.MotionActivity" />
@@ -39,6 +34,11 @@
         <activity
             android:name=".activities.BluetoothConnectionActivity"
             android:theme="@style/AppTheme_noTitle">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".activities.ServerActivity"/>
     </application>

@@ -37,6 +37,7 @@
     <string name="bluetoothConnection_dialog_noper_msg">You cannot use this function if coarse location permission is not allowed.</string>
     <string name="bluetoothConnection_dialog_connect_msg">Are you sure to connect to the device(%s)?</string>
     <string name="bluetoothConnection_dialog_fail_msg">Fail to connect to the device.</string>
+    <string name="bluetoothConnection_dialog_connecting">Connecting to the device ...</string>
 
     <string name="button_button_left_fast_text">Left-Fast</string>
     <string name="button_button_right_fast_text">Right-Fast</string>

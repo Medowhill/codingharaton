@@ -26,6 +26,7 @@ public class BluetoothConnectionTask extends AsyncTask<BluetoothDevice, Void, Bl
     protected void onPreExecute() {
         dialog = new ProgressDialog(mActivity);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage(mActivity.getString(R.string.bluetoothConnection_dialog_connecting));
         dialog.show();
     }
 

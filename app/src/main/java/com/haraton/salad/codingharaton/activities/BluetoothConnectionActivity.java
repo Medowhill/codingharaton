@@ -227,15 +227,12 @@ public class BluetoothConnectionActivity extends AppCompatActivity {
     public void afterConnect(BluetoothCommander commander) {
         if (commander != null) {
             ((MyApplication) getApplication()).setCommander(commander);
+            Intent intent = new Intent(getApplicationContext(), ChoiceActivity.class);
+            startActivity(intent);
         } else {
             new AlertDialog.Builder(BluetoothConnectionActivity.this)
                     .setMessage(R.string.bluetoothConnection_dialog_fail_msg)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
+                    .setPositiveButton(R.string.ok, null)
                     .setCancelable(false)
                     .create().show();
         }

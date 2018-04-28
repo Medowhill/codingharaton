@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.haraton.salad.codingharaton.R;
 import com.haraton.salad.codingharaton.applications.MyApplication;
 import com.haraton.salad.codingharaton.utils.BluetoothCommander;
+import com.haraton.salad.codingharaton.utils.Command;
 
 public class ButtonActivity extends AppCompatActivity {
 
@@ -27,25 +28,25 @@ public class ButtonActivity extends AppCompatActivity {
         buttonLeftFast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MyApplication) getApplication()).getCommander().send(BluetoothCommander.DIR_LEFT, BluetoothCommander.SPEED_FAST);
+                ((MyApplication) getApplication()).sendThroughBluetooth(Command.LEFT_FAST);
             }
         });
         buttonRightFast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MyApplication) getApplication()).getCommander().send(BluetoothCommander.DIR_RIGHT, BluetoothCommander.SPEED_FAST);
+                ((MyApplication) getApplication()).sendThroughBluetooth(Command.RIGHT_FAST);
             }
         });
         buttonLeftSlow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MyApplication) getApplication()).getCommander().send(BluetoothCommander.DIR_LEFT, BluetoothCommander.SPEED_SLOW);
+                ((MyApplication) getApplication()).sendThroughBluetooth(Command.LEFT_SLOW);
             }
         });
         buttonRightSlow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MyApplication) getApplication()).getCommander().send(BluetoothCommander.DIR_RIGHT, BluetoothCommander.SPEED_SLOW);
+                ((MyApplication) getApplication()).sendThroughBluetooth(Command.RIGHT_SLOW);
             }
         });
     }
