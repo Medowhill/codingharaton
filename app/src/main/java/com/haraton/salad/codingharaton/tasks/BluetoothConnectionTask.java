@@ -48,5 +48,6 @@ public class BluetoothConnectionTask extends AsyncTask<BluetoothDevice, Void, Bl
     @Override
     protected void onPostExecute(BluetoothCommander commander) {
         dialog.dismiss();
+        mActivity.afterConnect(commander);
     }
 }

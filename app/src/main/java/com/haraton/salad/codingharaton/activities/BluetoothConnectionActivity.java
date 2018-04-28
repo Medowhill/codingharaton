@@ -33,7 +33,9 @@ import android.widget.ProgressBar;
 
 import com.haraton.salad.codingharaton.R;
 import com.haraton.salad.codingharaton.adapters.BluetoothDeviceAdapter;
+import com.haraton.salad.codingharaton.applications.MyApplication;
 import com.haraton.salad.codingharaton.tasks.BluetoothConnectionTask;
+import com.haraton.salad.codingharaton.utils.BluetoothCommander;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -227,5 +229,22 @@ public class BluetoothConnectionActivity extends AppCompatActivity {
         mBluetoothAdapter.startDiscovery();
         progressBar.setVisibility(View.VISIBLE);
         mDiscoveryFinishHandler.sendEmptyMessageDelayed(0, 12000);
+    }
+
+    public void afterConnect(BluetoothCommander commander) {
+        if (commander != null) {
+            ((MyApplication) getApplication()).setCommander(commander);
+        } else {
+            new AlertDialog.Builder(BluetoothConnectionActivity.this)
+                    .setMessage(R.string.bluetoothConnection_dialog_fail_msg)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setCancelable(false)
+                    .create().show();
+        }
     }
 }

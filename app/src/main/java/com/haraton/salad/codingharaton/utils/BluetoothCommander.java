@@ -32,4 +32,14 @@ public class BluetoothCommander {
             Log.e("test-bluetooth", "ioe", e);
         }
     }
+
+    public void finish() {
+        try {
+            mOutputStream.close();
+            mInputStream.close();
+            mSocket.close();
+        } catch(IOException e) {
+            Log.e("test-bluetooth", "ioe", e);
+        }
+    }
 }
