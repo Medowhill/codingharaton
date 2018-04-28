@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.haraton.salad.codingharaton.R;
+import com.haraton.salad.codingharaton.applications.MyApplication;
+import com.haraton.salad.codingharaton.utils.BluetoothCommander;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,14 +81,14 @@ public class MotionActivity extends AppCompatActivity implements SensorEventList
                 posSum /= n;
                 if (Math.abs(negSum) < Math.abs(posSum)) { // left
                     if (posSum > 15)
-                        Log.i("test-motion", "fast left");
+                        ((MyApplication) getApplication()).getCommander().send(BluetoothCommander.DIR_LEFT, BluetoothCommander.SPEED_FAST);
                     else
-                        Log.i("test-motion", "slow left");
+                        ((MyApplication) getApplication()).getCommander().send(BluetoothCommander.DIR_LEFT, BluetoothCommander.SPEED_SLOW);
                 } else {
                     if (negSum > -15)
-                        Log.i("test-motion", "slow right");
+                        ((MyApplication) getApplication()).getCommander().send(BluetoothCommander.DIR_RIGHT, BluetoothCommander.SPEED_SLOW);
                     else
-                        Log.i("test-motion", "fast right");
+                        ((MyApplication) getApplication()).getCommander().send(BluetoothCommander.DIR_RIGHT, BluetoothCommander.SPEED_FAST);
                 }
             }
         } else if (event.sensor.equals(mAccelSensor)) {
