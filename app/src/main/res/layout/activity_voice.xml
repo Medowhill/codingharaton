@@ -4,23 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/instruction"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/instruction_default"
-        android:textSize="30sp"
-        android:layout_gravity="center"
-        android:layout_marginTop="100dp"/>
+        android:text="start"
+        android:id="@+id/btn_start"/>
 
-    <ImageButton
-        android:id="@+id/controlbutton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/voice_start_button"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stop"
+        android:id="@+id/btn_stop"/>
+
 
 
 
