@@ -3,6 +3,8 @@
     package="com.haraton.salad.codingharaton">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -16,7 +18,9 @@
         <activity android:name=".activities.ButtonActivity" />
         <activity android:name=".activities.MotionActivity" />
         <activity android:name=".activities.VoiceActivity" />
-        <activity android:name=".activities.BluetoothConnectionActivity">
+        <activity
+            android:name=".activities.BluetoothConnectionActivity"
+            android:theme="@style/AppTheme_noTitle">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 

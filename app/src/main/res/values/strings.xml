@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">Codingharaton</string>
 
-    <string name="bluetooth_device_address">addr</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
 
     <string name="instruction_default">Press below to START</string>
     <string name="instruction_clicked">Press below to STOP</string>
 
-    <string name="bluetoothConnection_textView_text">Connecting to a device</string>
+    <string name="bluetoothConnection_title_text">Connect to Device</string>
+    <string name="bluetoothConnection_menu_discovery_title">Discover</string>
+    <string name="bluetoothConnection_dialog_unable_msg">Bluetooth is not supported in your cellphone.</string>
+    <string name="bluetoothConnection_dialog_off_msg">You cannot use this function if your bluetooth is turned off.</string>
+    <string name="bluetoothConnection_dialog_noper_msg">You cannot use this function if coarse location permission is not allowed.</string>
 
     <string name="button_button_left_fast_text">Left-Fast</string>
     <string name="button_button_right_fast_text">Right-Fast</string>

@@ -1,42 +1,114 @@
 package com.haraton.salad.codingharaton.activities;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.haraton.salad.codingharaton.R;
 import com.haraton.salad.codingharaton.utils.BluetoothCommander;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.Set;
 import java.util.UUID;
 
 public class BluetoothConnectionActivity extends AppCompatActivity {
 
-    private final int REQ_BLUETOOTH = 0;
+    private final int REQ_BLUETOOTH = 0, REQ_PERMISSION = 1;
 
     private BluetoothAdapter mBluetoothAdapter;
+
+    private Toolbar toolbar;
+    private ProgressBar progressBar;
+
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                Log.i("test-bluetooth", device.getName() + "," + device.getAddress());
+//                mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+            }
+        }
+    };
+
+    private final Handler mDiscoveryFinishHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            Log.i("test-", "discovery fin");
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_connection);
 
+        toolbar = findViewById(R.id.bluetoothConnection_toolbar);
+        progressBar = findViewById(R.id.bluetoothConnection_progressBar);
+        setSupportActionBar(toolbar);
+
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter == null) finish();
+        if (mBluetoothAdapter == null) {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.bluetoothConnection_dialog_unable_msg)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .create().show();
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+            == PackageManager.PERMISSION_DENIED)
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQ_PERMISSION);
+
 
         if (!mBluetoothAdapter.isEnabled()) {
             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(intent, REQ_BLUETOOTH);
-        } else {
-            connect();
         }
+
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(mReceiver, filter);
+
+        findPairedDevices();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mReceiver);
+        if (mBluetoothAdapter != null && mBluetoothAdapter.isDiscovering())
+            mBluetoothAdapter.cancelDiscovery();
+
+        super.onDestroy();
     }
 
     @Override
@@ -44,30 +116,88 @@ public class BluetoothConnectionActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQ_BLUETOOTH:
                 if (resultCode == RESULT_OK) {
-                    connect();
+                    findPairedDevices();
                 } else {
-                    finish();
+                    new AlertDialog.Builder(this)
+                            .setMessage(R.string.bluetoothConnection_dialog_off_msg)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .create().show();
                 }
                 break;
         }
     }
 
-    private BluetoothCommander connect() {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQ_PERMISSION:
+                if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    new AlertDialog.Builder(this)
+                            .setMessage(R.string.bluetoothConnection_dialog_noper_msg)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .create().show();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.activity_bluetooth_connection, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.bluetoothConnection_menu_discovery:
+                discover();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void findPairedDevices() {
+        if (mBluetoothAdapter == null) return;
         Set<BluetoothDevice> bondedDevices = mBluetoothAdapter.getBondedDevices();
         if (!bondedDevices.isEmpty()) {
             for (BluetoothDevice device : bondedDevices) {
                 Log.i("test-bluetooth", device.getAddress() +"," + device.getName());
-                if(device.getAddress().equals(getString(R.string.bluetooth_device_address))) {
-                    try {
-                        BluetoothSocket socket = device.createInsecureRfcommSocketToServiceRecord(UUID.randomUUID());
-                        socket.connect();
-                        return new BluetoothCommander(socket);
-                    } catch (IOException e) {
-                        return null;
-                    }
-                }
             }
         }
-        return null;
+    }
+
+    private BluetoothCommander connect(BluetoothDevice device) {
+        try {
+            BluetoothSocket socket = device.createInsecureRfcommSocketToServiceRecord(UUID.randomUUID());
+            socket.connect();
+            return new BluetoothCommander(socket);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private void discover() {
+        if (mBluetoothAdapter == null || mBluetoothAdapter.isDiscovering()) return;
+
+        boolean res = mBluetoothAdapter.startDiscovery();
+        Log.i("test-bluetooth", "start discovery " + res);
+
+        progressBar.setVisibility(View.VISIBLE);
+        mDiscoveryFinishHandler.sendEmptyMessageDelayed(0, 12000);
     }
 }
