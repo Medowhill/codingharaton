@@ -18,4 +18,8 @@ public class MyApplication extends Application {
         else if (commander != null)
             commander.send(command);
     }
+
+    public void finishBluetooth() {
+        if (commander != null) commander.finish();
+    }
 }
