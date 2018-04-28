@@ -32,6 +32,7 @@
     <string name="start_button_server_text">Server Mode</string>
 
     <string name="server_dialog_getting">Getting an id from the server &#8230;</string>
+    <string name="server_dialog_fail">Fail to get the id from the server.</string>
 
     <string name="client_dialog_verifying">Verifying the id from the server &#8230;</string>
     <string name="client_dialog_wrong">Wrong id!</string>

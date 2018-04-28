@@ -1,6 +1,8 @@
 package com.haraton.salad.codingharaton.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -51,12 +53,25 @@ public class ServerActivity extends AppCompatActivity {
         new HttpTask(getApplicationContext(), HttpTask.TASK_SERVER, new HttpTask.Callback() {
             @Override
             public void onResult(byte result) {
-                id = result;
-                textView.setText(String.format("%03d", result));
                 dialog.dismiss();
+                if (0 <= result) {
+                    id = result;
+                    textView.setText(String.format("%03d", result));
 
-                run = true;
-                mThread.start();
+                    run = true;
+                    mThread.start();
+                } else {
+                    new AlertDialog.Builder(ServerActivity.this)
+                            .setMessage(R.string.server_dialog_fail)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setCancelable(false)
+                            .show();
+                }
             }
         }).execute();
     }

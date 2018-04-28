@@ -44,13 +44,14 @@ public class ClientActivity extends AppCompatActivity {
                             @Override
                             public void onResult(byte result) {
                                 dialog.dismiss();
+                                editText.setText("");
+
                                 if (result == 1) {
                                     Intent intent = new Intent(getApplicationContext(), ChoiceActivity.class);
                                     intent.putExtra("http", true);
                                     intent.putExtra("id", id);
                                     startActivity(intent);
                                 } else {
-                                    editText.setText("");
                                     new AlertDialog.Builder(ClientActivity.this)
                                             .setMessage(R.string.client_dialog_wrong)
                                             .setPositiveButton(R.string.ok, null)
