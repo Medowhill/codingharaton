@@ -46,4 +46,12 @@
             android:textSize="@dimen/button_button_text_size"
             android:text="@string/button_button_right_slow_text" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/button_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/button_text_view_margin"
+        android:textSize="@dimen/button_text_view_text_size"/>
 </LinearLayout>
