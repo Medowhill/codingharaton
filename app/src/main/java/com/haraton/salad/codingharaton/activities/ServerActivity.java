@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.haraton.salad.codingharaton.R;
 import com.haraton.salad.codingharaton.applications.MyApplication;
 import com.haraton.salad.codingharaton.tasks.HttpTask;
+import com.haraton.salad.codingharaton.utils.UbyteConverter;
 
 public class ServerActivity extends AppCompatActivity {
 
@@ -73,7 +74,7 @@ public class ServerActivity extends AppCompatActivity {
                             .show();
                 }
             }
-        }).execute();
+        }).execute(UbyteConverter.intToUbyte(((MyApplication) getApplication()).getDegree()));
     }
 
     @Override

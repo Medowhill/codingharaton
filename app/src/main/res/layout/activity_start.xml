@@ -8,18 +8,24 @@
     <Button
         android:id="@+id/start_button_single"
         android:text="@string/start_button_single_text"
+        android:textSize="@dimen/start_button_text_size"
+        android:padding="@dimen/start_button_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/start_button_server"
         android:text="@string/start_button_server_text"
+        android:textSize="@dimen/start_button_text_size"
+        android:padding="@dimen/start_button_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/start_button_client"
         android:text="@string/start_button_client_text"
+        android:textSize="@dimen/start_button_text_size"
+        android:padding="@dimen/start_button_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

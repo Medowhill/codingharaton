@@ -25,9 +25,13 @@ public class BluetoothCommander {
 
     public int initialize() {
         try {
-            byte[] b = new byte[1];
+            byte[] b = { 4 };
+            Log.i("test-bluetooth", String.valueOf(mInputStream.available()));
+            mOutputStream.write(b);
+            Log.i("test-bluetooth", String.valueOf(mInputStream.available()));
             mInputStream.read(b);
-            return ubyteToInt(b[0]);
+            Log.i("test-bluetooth", String.valueOf(b[0]));
+            return UbyteConverter.ubyteToInt(b[0]);
         } catch(IOException e) {
             Log.e("test-bluetooth", "ioe", e);
             return 93;
@@ -50,10 +54,5 @@ public class BluetoothCommander {
         } catch(IOException e) {
             Log.e("test-bluetooth", "ioe", e);
         }
-    }
-
-    private int ubyteToInt(byte ub) {
-        if (ub >= 0) return ub;
-        else return ub + 256;
     }
 }

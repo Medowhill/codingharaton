@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.haraton.salad.codingharaton.R;
+import com.haraton.salad.codingharaton.utils.UbyteConverter;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -53,7 +54,10 @@ public class HttpTask extends AsyncTask<Byte, Void, Byte> {
                     break;
                 case TASK_SERVER:
                     method = "GET";
-                    url = new URL(urlStr);
+                    if (bytes.length == 1)
+                        url = new URL(String.format(urlStr, UbyteConverter.ubyteToInt(bytes[0])));
+                    else
+                        return -1;
                     break;
                 case TASK_CMD_GET:
                     method = "GET";

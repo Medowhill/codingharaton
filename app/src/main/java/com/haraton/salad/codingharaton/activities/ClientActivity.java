@@ -8,10 +8,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.haraton.salad.codingharaton.R;
+import com.haraton.salad.codingharaton.applications.MyApplication;
 import com.haraton.salad.codingharaton.tasks.HttpTask;
+import com.haraton.salad.codingharaton.utils.UbyteConverter;
 
 public class ClientActivity extends AppCompatActivity {
 
@@ -46,17 +49,18 @@ public class ClientActivity extends AppCompatActivity {
                                 dialog.dismiss();
                                 editText.setText("");
 
-                                if (result == 1) {
-                                    Intent intent = new Intent(getApplicationContext(), ChoiceActivity.class);
-                                    intent.putExtra("http", true);
-                                    intent.putExtra("id", id);
-                                    startActivity(intent);
-                                } else {
+                                if (result == -1) {
                                     new AlertDialog.Builder(ClientActivity.this)
                                             .setMessage(R.string.client_dialog_wrong)
                                             .setPositiveButton(R.string.ok, null)
                                             .setCancelable(false)
                                             .show();
+                                } else {
+                                    ((MyApplication) getApplication()).setDegree(UbyteConverter.ubyteToInt(result));
+                                    Intent intent = new Intent(getApplicationContext(), ChoiceActivity.class);
+                                    intent.putExtra("http", true);
+                                    intent.putExtra("id", id);
+                                    startActivity(intent);
                                 }
                             }
                         }).execute(id);
