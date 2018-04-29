@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.haraton.salad.codingharaton.applications.MyApplication;
 import com.haraton.salad.codingharaton.utils.Command;
@@ -69,24 +70,26 @@ public class VoiceActivity extends Activity implements ISpeechRecognitionServerE
                     new String[]{Manifest.permission.RECORD_AUDIO},
                     0);
 
-        Button btnStart = findViewById(R.id.btn_start);
-        Button btnStop = findViewById(R.id.btn_stop);
+        final ImageButton btnCtrl = findViewById(R.id.btn_ctrl);
+        btnCtrl.setSelected(false);
 
-        btnStart.setOnClickListener(new OnClickListener() {
+        btnCtrl.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                voiceMoveActive();
-                Log.i("check", "start");
+                btnCtrl.setSelected(!btnCtrl.isSelected());
+                if (btnCtrl.isSelected()){
+                    btnCtrl.setImageResource(R.drawable.voice_stop_button);
+                    voiceMoveActive();
+                    Log.i("check", "start");
+                }
+                else{
+                    btnCtrl.setImageResource(R.drawable.voice_start_button);
+                    voiceMoveInactive();
+                    Log.i("check", "stop");
+                }
             }
         });
 
-        btnStop.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                voiceMoveInactive();
-                Log.i("check", "stop");
-            }
-        });
     }
 
     MicrophoneRecognitionClient micClient = null;

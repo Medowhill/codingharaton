@@ -4,19 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="start"
-        android:id="@+id/btn_start"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="stop"
-        android:id="@+id/btn_stop"/>
-
-
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/voice_start_button"
+        android:background="@color/transparent"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:id="@+id/btn_ctrl"/>
 
 
 </LinearLayout>
