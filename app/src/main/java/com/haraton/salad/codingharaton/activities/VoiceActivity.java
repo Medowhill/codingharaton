@@ -175,15 +175,14 @@ public class VoiceActivity extends Activity implements ISpeechRecognitionServerE
         }
         if (!isFinalDicationMessage) {
             for (int i = 0; i < response.Results.length; i++) {
-                String result = response.Results[i].DisplayText;
+                final String result = response.Results[i].DisplayText;
                 Log.i("-result", result);
                 if (sendVoice) {
-                    spokenResultView.setVisibility(View.VISIBLE);
-                    spokenResultView.setText(result);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            spokenResultView.setVisibility(View.INVISIBLE);
+                            spokenResultView.setVisibility(View.VISIBLE);
+                            spokenResultView.setText(result);
                         }
                     }, 900);
                     int btData = getBTdata(result);
