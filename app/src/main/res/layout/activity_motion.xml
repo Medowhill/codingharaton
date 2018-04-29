@@ -4,9 +4,33 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/motion_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/motion_textView_text"
         android:layout_gravity="center" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal" >
+
+        <TextView
+            android:id="@+id/motion_text_view_motion"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/motion_text_view_text_color"
+            android:textSize="@dimen/motion_text_view_text_size" />
+
+        <TextView
+            android:id="@+id/motion_text_view_arduino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="@string/motion_text_view_arduino_text"/>
+    </LinearLayout>
 
 </FrameLayout>

@@ -5,8 +5,12 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.haraton.salad.codingharaton.R;
 import com.haraton.salad.codingharaton.applications.MyApplication;
@@ -17,19 +21,37 @@ import java.util.Collections;
 
 public class MotionActivity extends AppCompatActivity implements SensorEventListener {
 
+    private final int[] MOTION_ID = { R.string.left_slow, R.string.left_fast, R.string.right_slow, R.string.right_fast };
+
     private final int ST_UP = 0, ST_DOWN = 1, ST_MID = 2;
     private int mState = ST_UP;
-    private boolean able = false, http;
+    private boolean able = false, http, sendMotion = true;
     private ArrayList<Float> accs = new ArrayList<>();
     private byte id;
 
     private SensorManager mSensorManager;
     private Sensor mRotSensor, mAccelSensor;
 
+    private TextView textView, textViewMotion, textViewArduino;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            sendMotion = true;
+            textViewMotion.setVisibility(View.INVISIBLE);
+            textViewArduino.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.VISIBLE);
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_motion);
+
+        textView = findViewById(R.id.motion_text_view);
+        textViewMotion = findViewById(R.id.motion_text_view_motion);
+        textViewArduino = findViewById(R.id.motion_text_view_arduino);
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mRotSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
@@ -79,18 +101,19 @@ public class MotionActivity extends AppCompatActivity implements SensorEventList
                 able = false;
                 accs.clear();
 
-                negSum /= n;
-                posSum /= n;
-                if (Math.abs(negSum) < Math.abs(posSum)) { // left
-                    if (posSum > 15)
-                        ((MyApplication) getApplication()).send(http, id, Command.LEFT_FAST);
-                    else
-                        ((MyApplication) getApplication()).send(http, id, Command.LEFT_SLOW);
-                } else {
-                    if (negSum > -15)
-                        ((MyApplication) getApplication()).send(http, id, Command.RIGHT_SLOW);
-                    else
-                        ((MyApplication) getApplication()).send(http, id, Command.RIGHT_FAST);
+                if (sendMotion) {
+                    negSum /= n;
+                    posSum /= n;
+                    byte cmd;
+                    if (Math.abs(negSum) < Math.abs(posSum)) { // left
+                        if (posSum > 15) cmd = Command.LEFT_FAST;
+                        else cmd = Command.LEFT_SLOW;
+                    } else {
+                        if (negSum > -15) cmd = Command.RIGHT_SLOW;
+                        else cmd = Command.RIGHT_FAST;
+                    }
+                    if (((MyApplication) getApplication()).send(http, id, cmd))
+                        showMotion(cmd);
                 }
             }
         } else if (event.sensor.equals(mAccelSensor)) {
@@ -100,5 +123,14 @@ public class MotionActivity extends AppCompatActivity implements SensorEventList
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    private void showMotion(byte cmd) {
+        textView.setVisibility(View.INVISIBLE);
+        textViewMotion.setText(MOTION_ID[cmd]);
+        textViewMotion.setVisibility(View.VISIBLE);
+        textViewArduino.setVisibility(View.VISIBLE);
+        mHandler.sendEmptyMessageDelayed(0, Command.getDelay(cmd));
+        sendMotion = false;
     }
 }

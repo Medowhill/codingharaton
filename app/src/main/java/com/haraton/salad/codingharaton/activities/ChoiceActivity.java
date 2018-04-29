@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.haraton.salad.codingharaton.R;
+import com.haraton.salad.codingharaton.applications.MyApplication;
 
 public class ChoiceActivity extends AppCompatActivity {
 
@@ -51,5 +52,11 @@ public class ChoiceActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }) ;
+    }
+
+    @Override
+    protected void onDestroy() {
+        ((MyApplication) getApplication()).finishBluetooth();
+        super.onDestroy();
     }
 }

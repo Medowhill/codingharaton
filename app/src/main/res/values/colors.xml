@@ -10,4 +10,6 @@
     <color name="bluetooth_device_textView_name_color">#202020</color>
 
     <color name="server_text_view_text_color">#202020</color>
+
+    <color name="motion_text_view_text_color">#202020</color>
 </resources>
