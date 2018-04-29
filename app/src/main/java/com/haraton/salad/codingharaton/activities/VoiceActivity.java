@@ -3,6 +3,8 @@ package com.haraton.salad.codingharaton.activities;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.haraton.salad.codingharaton.applications.MyApplication;
 import com.haraton.salad.codingharaton.utils.Command;
@@ -30,8 +33,20 @@ import com.microsoft.cognitiveservices.speechrecognition.SpeechRecognitionServic
 
 public class VoiceActivity extends Activity implements ISpeechRecognitionServerEvents
 {
+    private final int[] MOTION_ID = { R.string.left_slow, R.string.left_fast, R.string.right_slow, R.string.right_fast };
+
     boolean http;
     byte id;
+    boolean sendVoice = true;
+    private TextView spokenTextView, spokenResultView, commandView, degreeView;
+
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            sendVoice = true;
+            spokenResultView.setVisibility(View.INVISIBLE);
+            commandView.setVisibility(View.INVISIBLE);
+        }
+    };
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -64,6 +79,12 @@ public class VoiceActivity extends Activity implements ISpeechRecognitionServerE
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice);
 
+        spokenTextView = findViewById(R.id.spoken_text);
+        spokenResultView = findViewById(R.id.spoken_result);
+        commandView = findViewById(R.id.command);
+        degreeView = findViewById(R.id.degree);
+        degreeView.setText("degree: " + String.valueOf(((MyApplication) getApplication()).getDegree()));
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
                 == PackageManager.PERMISSION_DENIED)
             ActivityCompat.requestPermissions(this,
@@ -72,6 +93,7 @@ public class VoiceActivity extends Activity implements ISpeechRecognitionServerE
 
         final ImageButton btnCtrl = findViewById(R.id.btn_ctrl);
         btnCtrl.setSelected(false);
+        spokenTextView.setVisibility(View.INVISIBLE);
 
         btnCtrl.setOnClickListener(new OnClickListener() {
             @Override
@@ -79,11 +101,13 @@ public class VoiceActivity extends Activity implements ISpeechRecognitionServerE
                 btnCtrl.setSelected(!btnCtrl.isSelected());
                 if (btnCtrl.isSelected()){
                     btnCtrl.setImageResource(R.drawable.voice_stop_button);
+                    spokenTextView.setVisibility(View.VISIBLE);
                     voiceMoveActive();
                     Log.i("check", "start");
                 }
                 else{
                     btnCtrl.setImageResource(R.drawable.voice_start_button);
+                    spokenTextView.setVisibility(View.INVISIBLE);
                     voiceMoveInactive();
                     Log.i("check", "stop");
                 }
@@ -153,11 +177,29 @@ public class VoiceActivity extends Activity implements ISpeechRecognitionServerE
             for (int i = 0; i < response.Results.length; i++) {
                 String result = response.Results[i].DisplayText;
                 Log.i("-result", result);
-                int btData = getBTdata(result);
-                if (btData == 11){((MyApplication) getApplication()).send(http, id, Command.LEFT_SLOW);}
-                else if (btData == 12){((MyApplication) getApplication()).send(http, id, Command.LEFT_FAST);}
-                else if (btData == 21){((MyApplication) getApplication()).send(http, id, Command.RIGHT_SLOW);}
-                else if (btData == 22){((MyApplication) getApplication()).send(http, id, Command.RIGHT_FAST);}
+                if (sendVoice) {
+                    spokenResultView.setVisibility(View.VISIBLE);
+                    spokenResultView.setText(result);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            spokenResultView.setVisibility(View.INVISIBLE);
+                        }
+                    }, 900);
+                    int btData = getBTdata(result);
+                    byte cmd = -1;
+                    if (btData == 11) {
+                        cmd = Command.LEFT_SLOW;
+                    } else if (btData == 12) {
+                        cmd = Command.LEFT_FAST;
+                    } else if (btData == 21) {
+                        cmd = Command.RIGHT_SLOW;
+                    } else if (btData == 22) {
+                        cmd = Command.RIGHT_FAST;
+                    }
+                    if (cmd != -1 && ((MyApplication) getApplication()).send(http, id, cmd))
+                        showVoiceCommand(cmd);
+                }
             }
         }
     };
@@ -185,5 +227,12 @@ public class VoiceActivity extends Activity implements ISpeechRecognitionServerE
     public void onPartialResponseReceived(java.lang.String response){
         Log.i("check", "partial Result Method Called");
     };
+
+    public void showVoiceCommand(byte cmd){
+        commandView.setVisibility(View.VISIBLE);
+        commandView.setText(MOTION_ID[cmd]);
+        degreeView.setText("degree: " + String.valueOf(((MyApplication) getApplication()).getDegree()));
+        handler.sendEmptyMessageDelayed(0, Command.getDelay(cmd));
+    }
 
 }

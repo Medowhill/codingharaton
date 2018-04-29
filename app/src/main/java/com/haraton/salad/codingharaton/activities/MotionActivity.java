@@ -32,7 +32,7 @@ public class MotionActivity extends AppCompatActivity implements SensorEventList
     private SensorManager mSensorManager;
     private Sensor mRotSensor, mAccelSensor;
 
-    private TextView textView, textViewMotion, textViewArduino;
+    private TextView textView, textViewMotion, textViewArduino, degreeView;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -52,6 +52,8 @@ public class MotionActivity extends AppCompatActivity implements SensorEventList
         textView = findViewById(R.id.motion_text_view);
         textViewMotion = findViewById(R.id.motion_text_view_motion);
         textViewArduino = findViewById(R.id.motion_text_view_arduino);
+        degreeView = findViewById(R.id.degree);
+        degreeView.setText("degree: " + String.valueOf(((MyApplication) getApplication()).getDegree()));
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mRotSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
@@ -130,6 +132,7 @@ public class MotionActivity extends AppCompatActivity implements SensorEventList
         textViewMotion.setText(MOTION_ID[cmd]);
         textViewMotion.setVisibility(View.VISIBLE);
         textViewArduino.setVisibility(View.VISIBLE);
+        degreeView.setText("degree: " + String.valueOf(((MyApplication) getApplication()).getDegree()));
         mHandler.sendEmptyMessageDelayed(0, Command.getDelay(cmd));
         sendMotion = false;
     }
