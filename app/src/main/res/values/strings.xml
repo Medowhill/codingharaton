@@ -27,10 +27,11 @@
     <string name="right_fast">RIGHT FAST</string>
     <string name="bt_uuid">00001101-0000-1000-8000-00805F9B34FB</string>
     <string name="url_client">http://ssal.sparcs.org:8888/client?id=%d</string>
-    <string name="url_server">http://ssal.sparcs.org:8888/server</string>
+    <string name="url_server">http://ssal.sparcs.org:8888/server?status=%d</string>
     <string name="url_command_get">http://ssal.sparcs.org:8888/command?id=%d</string>
     <string name="url_command_post">http://ssal.sparcs.org:8888/command?id=%d\&amp;cmd=%d</string>
     <string name="command_unavailable">The command is not available now.</string>
+    <string name="arduino_working">Arduino is working. Please wait.</string>
 
     <string name="start_button_single_text">Single Mode</string>
     <string name="start_button_client_text">Client Mode</string>
@@ -60,5 +61,4 @@
     <string name="button_button_right_slow_text">Right-Slow</string>
 
     <string name="motion_textView_text">Shake your phone to the left or right to move.</string>
-    <string name="motion_text_view_arduino_text">Arduino is working. Please wait.</string>
 </resources>

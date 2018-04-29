@@ -11,5 +11,6 @@
     <dimen name="server_text_view_text_size">50sp</dimen>
     <dimen name="client_edit_text_text_size">50sp</dimen>
     <dimen name="motion_text_view_text_size">50sp</dimen>
+    <dimen name="button_button_text_size">25sp</dimen>
 
 </resources>
